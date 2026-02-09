@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>যোগাযোগ করুন | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            background: radial-gradient(circle at bottom left, #fff5f6, #e8f0ff);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0;
+            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            border-radius: 50px;
+            overflow: hidden;
+            max-width: 900px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info {
+            background: var(--ios-pink);
+            color: white;
+            padding: 50px;
+        }
+
+        .contact-form {
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            background: var(--ios-pink);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contact-container">
+        <div class="contact-info">
+            <h2>যোগাযোগ তথ্য</h2>
+            <p>আপনার যেকোনো প্রশ্ন বা পরামর্শ আমাদের জানান। আমরা আপনার কথা শুনতে আগ্রহী।</p>
+            <div style="margin-top: 40px;">
+                <p><i data-lucide="mail"></i> support@kothaboli.com</p>
+                <p><i data-lucide="phone"></i> +880 1XXX-XXXXXX</p>
+                <p><i data-lucide="map-pin"></i> ঢাকা, বাংলাদেশ</p>
+            </div>
+        </div>
+        <div class="contact-form">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="name" placeholder="আপনার নাম" required>
+                <input type="email" name="email" placeholder="ইমেইল এড্রেস" required>
+                <textarea name="message" rows="5" placeholder="আপনার বার্তাটি লিখুন..." required></textarea>
+                <button type="submit" class="submit-btn">বার্তা পাঠান</button>
+            </form>
+        </div>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

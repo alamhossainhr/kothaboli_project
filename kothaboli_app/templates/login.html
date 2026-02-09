@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>লগইন | Kotha Boli</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --ios-blue: #007aff;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f2f2f7 0%, #fff5f6 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 50px 40px;
+            border-radius: 45px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+        }
+
+        .icon-box {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #1c1c1e;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        input:focus {
+            border-color: var(--ios-pink);
+            box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--ios-pink);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(255, 45, 85, 0.25);
+        }
+
+        .btn-submit:hover {
+            background: #e6264b;
+            transform: translateY(-2px);
+        }
+
+        .footer-link {
+            display: block;
+            margin-top: 25px;
+            color: var(--ios-blue);
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .messages {
+            list-style: none;
+            padding: 0;
+            color: var(--ios-pink);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glass-card">
+        <div class="icon-box">🔐</div>
+        <h2>স্বাগতম</h2>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+
+        <form method="POST">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="ব্যবহারকারীর নাম" required>
+    
+    <div style="position: relative;">
+        <input type="password" name="password" id="passwordField" placeholder="পাসওয়ার্ড" required style="padding-right: 50px;">
+        <span id="togglePassword" style="position: absolute; right: 20px; top: 18px; cursor: pointer; font-size: 18px; opacity: 0.6;">
+            👁️
+        </span>
+    </div>
+
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    <button type="submit" class="btn-submit">লগইন করুন</button>
+</form>
+
+        <a href="/register/" class="footer-link">অ্যাকাউন্ট নেই? নতুন খুলুন</a>
+    </div>
+
+    <script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#passwordField');
+
+    togglePassword.addEventListener('click', function () {
+        // Toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        
+        // Toggle the emoji
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>প্রোফাইল আপডেট | কথা বলি</title>
+    <style>
+        body {
+            background: #fff5f6;
+            font-family: 'Hind Siliguri', sans-serif;
+            padding: 40px;
+        }
+
+        .form-card {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        .save-btn {
+            width: 100%;
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-card">
+        <h3>তথ্য পরিবর্তন করুন</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="full_name" value="{{ user.userprofile.full_name }}" placeholder="নাম">
+            <input type="text" name="mobile" value="{{ user.userprofile.mobile_number }}" placeholder="মোবাইল">
+            <button type="submit" class="save-btn">সংরক্ষণ করুন</button>
+        </form>
+    </div>
+</body>
+
+</html>

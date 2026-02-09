@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>এজেন্ট প্যানেল | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f2f2f7 0%, #fff5f6 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            padding: 40px;
+        }
+
+        .panel-card {
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            padding: 40px;
+            border-radius: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+        }
+
+        .status-toggle {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #34c759;
+            color: white;
+            border-radius: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="panel-card">
+        <div style="font-size: 50px;">🎧</div>
+        <h2>হ্যালো, {{ user.userprofile.full_name }}</h2>
+        <p>আপনার বর্তমান স্ট্যাটাস: <strong>অনলাইন</strong></p>
+        <a href="#" class="status-toggle">অফলাইন যান</a>
+
+        <div style="margin-top: 40px; text-align: left;">
+            <h3>সাম্প্রতিক অনুরোধ</h3>
+            <p style="color: #8e8e93;">বর্তমানে কোনো নতুন অনুরোধ নেই।</p>
+        </div>
+    </div>
+</body>
+
+</html>

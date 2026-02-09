@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>গল্পের বিস্তারিত | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #fdfcfb;
+            font-family: 'Hind Siliguri', sans-serif;
+            padding: 40px;
+        }
+
+        .detail-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .meta {
+            margin-bottom: 20px;
+            color: #8e8e93;
+            font-size: 14px;
+        }
+
+        .content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #1c1c1e;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="detail-card">
+        <div class="meta">লিখেছেন: <strong>{{ post.author.userprofile.full_name }}</strong> | {{ post.created_at }}
+        </div>
+        <div class="content">{{ post.content }}</div>
+        <a href="{% url 'blog' %}" style="display:block; margin-top:30px; color:#ff2d55; text-decoration:none;">← ফিরে
+            যান</a>
+    </div>
+</body>
+
+</html>

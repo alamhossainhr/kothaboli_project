@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>নিবন্ধন | Kotha Boli</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --ios-blue: #007aff;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f2f2f7 0%, #fff5f6 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Glass Container */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 50px 40px;
+            border-radius: 45px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .icon-box {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #1c1c1e;
+            letter-spacing: -1px;
+        }
+
+        /* iOS Style Inputs */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--ios-pink);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.1);
+        }
+
+        /* Premium Button */
+        .btn-submit {
+            width: 100%;
+            background: var(--ios-pink);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 45, 85, 0.25);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            background: #e6264b;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+
+        .footer-link {
+            display: block;
+            margin-top: 25px;
+            color: var(--ios-blue);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        /* Error Messages */
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+            color: var(--ios-pink);
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glass-card">
+        <div class="icon-box">✍️</div>
+        <h2>নতুন অ্যাকাউন্ট</h2>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <style>
+                .role-btn {
+                    padding: 12px;
+                    border-radius: 15px;
+                    background: rgba(0, 0, 0, 0.05);
+                    text-align: center;
+                    transition: 0.3s;
+                    border: 1px solid transparent;
+                }
+
+                input[type="radio"]:checked+.role-btn {
+                    background: var(--ios-pink);
+                    color: white;
+                    border-color: var(--ios-pink);
+                }
+            </style>
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label style="display:block; margin-bottom:10px; font-weight:600;">অ্যাকাউন্ট টাইপ সিলেক্ট
+                        করুন:</label>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <label style="flex:1; cursor:pointer;">
+                            <input type="radio" name="role" value="user" checked style="display:none;">
+                            <div class="role-btn">সাধারণ ইউজার</div>
+                        </label>
+                        <label style="flex:1; cursor:pointer;">
+                            <input type="radio" name="role" value="agent" style="display:none;">
+                            <div class="role-btn">এজেন্ট</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" name="full_name" placeholder="আপনার পূর্ণ নাম" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="mobile_number" placeholder="মোবাইল নম্বর" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="ইউজারনেম" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="ইমেইল এড্রেস" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="পাসওয়ার্ড" required>
+                </div>
+
+                <button type="submit" class="btn-submit">নিবন্ধন সম্পন্ন করুন</button>
+            </form>
+        </form>
+
+        <a href="/login/" class="footer-link">ইতিমধ্যেই অ্যাকাউন্ট আছে? লগইন করুন</a>
+        <a href="/" class="footer-link">ফিরে যান মূল পাতায়</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ড্যাশবোর্ড | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --ios-blue: #007aff;
+            --glass: rgba(255, 255, 255, 0.75);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f2f2f7 0%, #fff5f6 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .user-greet h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #1c1c1e;
+        }
+
+        .logout-btn {
+            color: var(--ios-pink);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 35px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: var(--ios-pink);
+            box-shadow: 0 8px 15px rgba(255, 45, 85, 0.1);
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        .service-card p {
+            font-size: 15px;
+            color: #636366;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="user-greet">
+            <h2>স্বাগতম, {{ user.username }}! 👋</h2>
+        </div>
+        <div class="nav-links">
+            <a href="/" style="margin-right: 20px; text-decoration: none; color: var(--ios-blue); font-weight: 600;">হোম
+                পেজ</a>
+            <a href="{% url 'logout' %}" class="logout-btn"
+                onclick="return confirm('আপনি কি নিশ্চিত যে লগআউট করতে চান?')">লগআউট</a>
+        </div>
+    </nav>
+
+    <div class="services-grid">
+        <a href="/agents/" class="service-card">
+            <div class="icon-wrapper"><i data-lucide="users"></i></div>
+            <h3>এজেন্ট খুঁজুন</h3>
+            <p>আমাদের অভিজ্ঞ বন্ধুদের সাথে কথা বলে মনের ভার হালকা করুন।</p>
+        </a>
+
+        <a href="/blog/" class="service-card">
+            <div class="icon-wrapper"><i data-lucide="book-open"></i></div>
+            <h3>কমিউনিটি ব্লগ</h3>
+            <p>অন্যদের জীবনের গল্প পড়ুন এবং নিজের অনুভূতি শেয়ার করুন।</p>
+        </a>
+
+        <a href="/my-bookings/" class="service-card">
+            <div class="icon-wrapper"><i data-lucide="calendar"></i></div>
+            <h3>আমার বুকিং</h3>
+            <p>আপনার পূর্ববর্তী এবং আগামীকালের অ্যাপয়েন্টমেন্টগুলো দেখুন।</p>
+        </a>
+
+        <a href="/support/" class="service-card">
+            <div class="icon-wrapper"><i data-lucide="heart-handshake"></i></div>
+            <h3>সাপোর্ট সেন্টার</h3>
+            <p>যেকোনো সমস্যায় আমাদের টিমের সাথে সরাসরি যোগাযোগ করুন।</p>
+        </a>
+    </div>
+
+    <script>lucide.createIcons();</script>
+
+
+</body>
+
+</html>

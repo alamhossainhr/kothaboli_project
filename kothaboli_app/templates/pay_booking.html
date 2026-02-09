@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>পেমেন্ট পদ্ধতি | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --ios-blue: #007aff;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            background: #f2f2f7;
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .payment-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 35px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid white;
+            text-align: center;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .method-item {
+            border: 2px solid #eee;
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method-item input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .method-item:has(input:checked) {
+            border-color: var(--ios-blue);
+            background: rgba(0, 122, 255, 0.05);
+        }
+
+        .method-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            background: #34c759;
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .confirm-btn:hover {
+            transform: scale(1.02);
+            background: #2da94d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-card">
+        <h2 style="margin-top: 0; color: #1c1c1e;">পেমেন্ট পদ্ধতি বাছুন</h2>
+
+        <div style="background: rgba(0,0,0,0.03); padding: 20px; border-radius: 20px;">
+            <p style="margin: 0;">এজেন্ট: <b>{{ booking.agent.user.userprofile.full_name }}</b></p>
+            <h1 style="color: #ff2d55; margin: 10px 0;">৳ {{ booking.total_amount }}</h1>
+        </div>
+
+        <form>
+            <div class="method-grid">
+                <label class="method-item">
+                    <input type="radio" name="payment_method" value="bkash" required>
+                    <img src="/media/agents/logo/bkash-logo-.png" alt="bKash">
+                    <span style="font-weight: 600;">bKash</span>
+                </label>
+                <label class="method-item">
+                    <input type="radio" name="payment_method" value="nagad">
+                    <img src="/media/agents/logo/nagad-logo.png" alt="Nagad">
+                    <span style="font-weight: 600;">Nagad</span>
+                </label>
+                <label class="method-item">
+                    <input type="radio" name="payment_method" value="rocket">
+                    <img src="/media/agents/logo/Rocket_mobile_banking_logo.png" alt="Rocket">
+                    <span style="font-weight: 600;">Rocket</span>
+                </label>
+                <label class="method-item">
+                    <input type="radio" name="payment_method" value="dbbl">
+                    <img src="/media/agents/logo/DBBL-logo.jpg" alt="DBBL">
+                    <span style="font-weight: 600;">DBBL</span>
+                </label>
+            </div>
+
+            <button type="button" onclick="handlePaymentRedirect(event)" class="confirm-btn">
+                পেমেন্ট নিশ্চিত করুন
+            </button>
+        </form>
+
+        <div style="margin-top: 25px;">
+            <a href="{% url 'my_bookings' %}"
+                style="text-decoration: none; color: #8e8e93; font-size: 14px; font-weight: 600;">← ফিরে যান</a>
+        </div>
+    </div>
+
+    <script>
+        // pay_booking.html
+        function handlePaymentRedirect(event) {
+            event.preventDefault();
+            const checkedRadio = document.querySelector('input[name="payment_method"]:checked');
+            if (!checkedRadio) {
+                alert("দয়া করে একটি পেমেন্ট মাধ্যম নির্বাচন করুন");
+                return;
+            }
+            const method = checkedRadio.value;
+
+            // Correctly handle the ID: Use 0 for registration, otherwise use the dynamic ID
+            const bookingId = "{{ booking.id|default:'0' }}";
+
+            // Ensure the slash / is always present at the end
+            window.location.href = `/payment-gateway/${method}/${bookingId}/`;
+        }
+    </script>
+</body>
+
+</html>

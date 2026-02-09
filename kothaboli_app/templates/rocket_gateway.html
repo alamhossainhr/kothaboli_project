@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rocket Payment Gateway | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f2f2f7;
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .rocket-container {
+            width: 360px;
+            background: #8c3494;
+            border-radius: 20px;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header img {
+            width: 110px;
+        }
+
+        .body-content {
+            padding: 25px;
+            text-align: center;
+        }
+
+        /* Professional 3-Line Instruction Box */
+        .instruction-box {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            font-size: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            outline: none;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: #8c3494;
+            border: none;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        .confirm-btn:hover {
+            background: #f8f8f8;
+            transform: translateY(-1px);
+        }
+
+        /* Boxed Back Button */
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid white;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rocket-container">
+        <div class="header">
+            <img src="/media/agents/logo/Rocket_mobile_banking_logo.png" alt="Rocket">
+        </div>
+
+        <div class="body-content">
+            <div class="instruction-box">
+                <p style="margin: 0; opacity: 0.9; font-size: 14px;">নিচের রকেট নম্বরে <b>Send Money</b> করুন:</p>
+                <p style="margin: 8px 0; font-size: 20px; font-weight: 800; letter-spacing: 1px;">01738665530</p>
+                <h2
+                    style="margin: 10px 0 0; font-size: 22px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;">
+                    ৳ {{ booking.total_amount }}
+                </h2>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="phone_number" placeholder="রকেট নম্বর দিন" class="input-field" required>
+                <input type="text" name="transaction_id" placeholder="TrxID দিন" class="input-field" required>
+                <button type="submit" class="confirm-btn">পেমেন্ট নিশ্চিত করুন</button>
+            </form>
+
+            {% if booking %}
+            <a href="{% url 'pay_booking' booking.id %}" class="back-link">← ফিরে যান</a>
+            {% else %}
+            <a href="{% url 'agent_registration_fee' %}" class="back-link">← Back</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

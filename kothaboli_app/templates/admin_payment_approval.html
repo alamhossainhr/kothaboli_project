@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>পেমেন্ট অ্যাপ্রুভাল সেন্টার | Kotha Boli Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-blue: #007aff;
+            --ios-green: #34c759;
+            --ios-red: #ff3b30;
+            --bkash: #e2136e;
+            --nagad: #f7941d;
+        }
+
+        body {
+            background: #f2f2f7;
+            font-family: 'Hind Siliguri', sans-serif;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #1c1c1e;
+        }
+
+        .approval-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e5ea;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 20px;
+            font-size: 13px;
+            color: #8e8e93;
+            text-transform: uppercase;
+            border-bottom: 1px solid #f2f2f7;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid #f2f2f7;
+            vertical-align: middle;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .trx-box {
+            font-family: monospace;
+            background: #fff5f8;
+            color: var(--ios-red);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: 1px solid #ffebeb;
+        }
+
+        .amount-text {
+            color: var(--ios-green);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-approve {
+            background: var(--ios-green);
+            color: white;
+        }
+
+        .btn-reject {
+            background: var(--ios-red);
+            color: white;
+            margin-left: 5px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            color: var(--ios-blue);
+            font-weight: 700;
+            padding: 12px 25px;
+            border: 2px solid var(--ios-blue);
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">💰 পেমেন্ট অ্যাপ্রুভাল সেন্টার (All Payments)</div>
+        <div class="approval-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ধরণ (Type)</th>
+                        <th>ইনভয়েস/ID</th>
+                        <th>ব্যবহারকারী</th>
+                        <th>মেথড ও নম্বর</th>
+                        <th>TrxID</th>
+                        <th>পরিমাণ</th>
+                        <th>অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in all_pending %}
+                    <tr>
+                        <td>
+                            <span class="badge"
+                                style="background: {% if item.type == 'Booking' %}#007aff{% else %}#ff2d55{% endif %};">
+                                {{ item.type }}
+                            </span>
+                        </td>
+                        <td style="font-weight: 700; color: #8e8e93;">#{{ item.id }}</td>
+                        <td>
+                            <div style="font-weight: 700;">{{ item.user }}</div>
+                            <div style="font-size: 12px; color: #8e8e93;">@{{ item.username }}</div>
+                        </td>
+                        <td>
+                            <span class="badge" style="background: var(--ios-blue);">{{ item.method }}</span>
+                            <div style="margin-top: 5px; font-weight: 600;">{{ item.number }}</div>
+                        </td>
+                        <td><span class="trx-box">{{ item.trxid }}</span></td>
+                        <td class="amount-text">৳ {{ item.amount }}</td>
+                        <td>
+                            <form method="POST" style="display: flex;">
+                                {% csrf_token %}
+                                <input type="hidden" name="obj_id" value="{{ item.id }}">
+                                <input type="hidden" name="model_type" value="{{ item.model_type }}">
+                                <button type="submit" name="action" value="approve"
+                                    class="btn btn-approve">Approve</button>
+                                <button type="submit" name="action" value="reject"
+                                    class="btn btn-reject">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 60px; color: #8e8e93;">পেন্ডিং পেমেন্ট নেই।
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div style="text-align: center;"><a href="/admin/" class="back-link">← ব্যাক টু অ্যাডমিন প্যানেল</a></div>
+    </div>
+</body>
+
+</html>

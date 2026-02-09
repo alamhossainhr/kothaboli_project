@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Payment | Rocket</title>
+    <style>
+        :root {
+            --brand-color: #8c3494;
+        }
+
+        /* Rocket Purple */
+        body {
+            background: #f2f2f7;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .payment-container {
+            width: 400px;
+            background: var(--brand-color);
+            border-radius: 25px;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header img {
+            width: 120px;
+        }
+
+        .body-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .instruction-box {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 16px;
+            background: white;
+            color: var(--brand-color);
+            border: none;
+            border-radius: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            z-index: 4000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confirm-card {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            color: #1c1c1e;
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-yes {
+            flex: 1;
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            background: var(--brand-color);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-no {
+            flex: 1;
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            background: #e5e5ea;
+            color: #1c1c1e;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-container">
+        <div class="header">
+            <img src="/media/agents/logo/Rocket_mobile_banking_logo.png" alt="Rocket">
+        </div>
+        <div class="body-content">
+            <div class="instruction-box">
+                <p style="margin: 0; font-size: 14px; opacity: 0.9;">Send Money to the Rocket number below:</p>
+                <h2 style="margin: 10px 0; font-size: 26px;">01738665530</h2>
+                <p style="margin: 0; font-size: 14px;">Fee: <b>৳ {{ amount }}</b></p>
+            </div>
+            <form id="paymentForm" method="POST" onsubmit="return showConfirm(event)">
+                {% csrf_token %}
+                <input type="text" name="phone_number" placeholder="Your Rocket Number" class="input-field" required
+                    maxlength="11">
+                <input type="text" name="transaction_id" placeholder="Transaction ID (TrxID)" class="input-field"
+                    style="text-transform: uppercase;" required>
+                <button type="submit" class="confirm-btn">Confirm Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="customConfirm" class="modal-overlay">
+        <div class="confirm-card">
+            <div style="font-size: 50px; margin-bottom: 20px;">🚀</div>
+            <h2 style="font-size: 24px;">পেমেন্ট নিশ্চিত করুন</h2>
+            <p style="color: #8e8e93;">আপনার দেওয়া তথ্য কি সঠিক? ভুল TrxID দিলে একাউন্ট সচল হবে না।</p>
+            <div class="modal-btns">
+                <button onclick="closeConfirm(false)" class="btn-no">বাতিল</button>
+                <button onclick="closeConfirm(true)" class="btn-yes">হ্যাঁ, ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div id="flashError" class="modal-overlay" style="display: flex;">
+        <div class="confirm-card" style="border-top: 8px solid #ff3b30;">
+            <div style="font-size: 50px; margin-bottom: 20px;">🚫</div>
+            <h2 style="font-size: 24px;">Transaction Error</h2>
+            <p style="color: #8e8e93;">{{ message }}</p>
+            <button onclick="document.getElementById('flashError').style.display='none'" class="btn-yes">ঠিক
+                আছে</button>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <script>
+        const modal = document.getElementById('customConfirm');
+        const form = document.getElementById('paymentForm');
+        let isConfirmed = false;
+        function showConfirm(event) {
+            if (!isConfirmed) {
+                event.preventDefault();
+                modal.style.display = 'flex';
+                return false;
+            }
+            return true;
+        }
+        function closeConfirm(authenticated) {
+            if (authenticated) { isConfirmed = true; form.submit(); }
+            else { modal.style.display = 'none'; }
+        }
+    </script>
+</body>
+
+</html>

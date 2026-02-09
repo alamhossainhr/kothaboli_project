@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Agent Registration Payment | bKash</title>
+    <style>
+        :root {
+            --bkash-pink: #e2136e;
+        }
+
+        body {
+            background: #f2f2f7;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Main Container */
+        .bkash-container {
+            width: 400px;
+            background: var(--bkash-pink);
+            border-radius: 25px;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header img {
+            width: 120px;
+        }
+
+        .body-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* Input & Buttons */
+        .instruction-box {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 16px;
+            background: white;
+            color: var(--bkash-pink);
+            border: none;
+            border-radius: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        /* Custom Stylish Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            z-index: 4000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .confirm-card {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-yes {
+            flex: 1;
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            background: var(--bkash-pink);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-no {
+            flex: 1;
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            background: #e5e5ea;
+            color: #1c1c1e;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Flash Error Modal */
+        .error-card {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            border-top: 8px solid #ff3b30;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bkash-container">
+        <div class="header">
+            <img src="/media/agents/logo/bkash-logo-.png" alt="bKash">
+        </div>
+        <div class="body-content">
+            <div class="instruction-box">
+                <p style="margin: 0; font-size: 14px; opacity: 0.9;">Send Money to the bKash number below:</p>
+                <h2 style="margin: 10px 0; font-size: 26px; letter-spacing: 1px;">01738665530</h2>
+                <p style="margin: 0; font-size: 14px;">Fee: <b>৳ {{ amount }}</b></p>
+            </div>
+
+            <form id="paymentForm" method="POST" onsubmit="return showConfirm(event)">
+                {% csrf_token %}
+                <input type="text" name="phone_number" placeholder="Your bKash Number" class="input-field" required
+                    maxlength="11">
+                <input type="text" name="transaction_id" placeholder="Transaction ID (TrxID)" class="input-field"
+                    style="text-transform: uppercase;" required>
+                <button type="submit" class="confirm-btn">Confirm Registration Payment</button>
+            </form>
+
+            <div style="margin-top: 25px;">
+                <a href="{% url 'agent_registration_fee' %}"
+                    style="color: white; text-decoration: none; font-size: 13px; opacity: 0.7;">← পেমেন্ট মেথোডে ফিরে
+                    যান</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="customConfirm" class="modal-overlay">
+        <div class="confirm-card">
+            <div style="font-size: 50px; margin-bottom: 20px;">💳</div>
+            <h2 style="margin: 0 0 10px 0; font-size: 24px; color: #1c1c1e;">পেমেন্ট নিশ্চিত করুন</h2>
+            <p style="color: #8e8e93; line-height: 1.5;">আপনার দেওয়া তথ্য কি সঠিক? একই TrxID দ্বিতীয়বার ব্যবহার করা যাবে
+                না।</p>
+            <div class="modal-btns">
+                <button onclick="closeConfirm(false)" class="btn-no">বাতিল</button>
+                <button onclick="closeConfirm(true)" class="btn-yes">হ্যাঁ, ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div id="flashError" class="modal-overlay" style="display: flex;">
+        <div class="error-card">
+            <div style="font-size: 50px; margin-bottom: 20px;">🚫</div>
+            <h2 style="margin: 0 0 10px 0; font-size: 24px; color: #1c1c1e;">Transaction Error</h2>
+            <p style="color: #8e8e93; margin-bottom: 30px;">{{ message }}</p>
+            <button onclick="document.getElementById('flashError').style.display='none'" class="btn-yes">ঠিক
+                আছে</button>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <script>
+        const modal = document.getElementById('customConfirm');
+        const form = document.getElementById('paymentForm');
+        let isConfirmed = false;
+
+        function showConfirm(event) {
+            if (!isConfirmed) {
+                event.preventDefault(); // Stop form submission
+                modal.style.display = 'flex'; // Show colorful UI
+                return false;
+            }
+            return true;
+        }
+
+        function closeConfirm(authenticated) {
+            if (authenticated) {
+                isConfirmed = true;
+                form.submit(); // Proceed with submission
+            } else {
+                modal.style.display = 'none'; // Close modal
+            }
+        }
+    </script>
+</body>
+
+</html>

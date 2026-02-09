@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>নিবন্ধন ফি রসিদ | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-blue: #007aff;
+            --ios-pink: #ff2d55;
+        }
+
+        body {
+            background: #f2f2f7;
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            flex-direction: column;
+            /* Fixed to allow vertical alignment of card and back link */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .receipt-card {
+            background: white;
+            width: 400px;
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        }
+
+        .status {
+            color: #34c759;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h2 {
+            color: var(--ios-pink);
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .info-table {
+            width: 100%;
+            margin: 25px 0;
+            border-collapse: collapse;
+        }
+
+        .info-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #f2f2f7;
+            font-size: 15px;
+        }
+
+        .label {
+            color: #8e8e93;
+        }
+
+        .value {
+            text-align: right;
+            font-weight: 600;
+            color: #1c1c1e;
+        }
+
+        .total {
+            font-size: 24px;
+            color: #1c1c1e;
+            font-weight: 700;
+            padding-top: 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background: var(--ios-blue);
+            color: white;
+            padding: 15px;
+            border-radius: 18px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 700;
+            margin-top: 25px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Print optimization */
+        @media print {
+            .no-print {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .receipt-card {
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="receipt-card">
+        <div style="text-align: center;">
+            <span class="status">পরিশোধিত (PAID)</span>
+            <h2>কথা বলি</h2>
+            <p style="color: #8e8e93; font-size: 13px;">এজেন্ট নিবন্ধন ফি রসিদ</p>
+        </div>
+
+        <table class="info-table">
+            <tr>
+                <td class="label">রসিদ নং:</td>
+                <td class="value">REG-{{ reg_payment.id|stringformat:"04d" }}</td>
+            </tr>
+            <tr>
+                <td class="label">এজেন্ট নাম:</td>
+                <td class="value">{{ user.userprofile.full_name }}</td>
+            </tr>
+            <tr>
+                <td class="label">পেমেন্ট মাধ্যম:</td>
+                <td class="value">{{ reg_payment.payment_method }}</td>
+            </tr>
+            <tr>
+                <td class="label">TrxID:</td>
+                <td class="value" style="color:var(--ios-blue);">{{ reg_payment.transaction_id }}</td>
+            </tr>
+            <tr>
+                <td class="label total">মোট পরিমাণ:</td>
+                <td class="value total" style="color: #34c759;">৳ 500.00</td>
+            </tr>
+        </table>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <img src="https://quickchart.io/qr?text=AgentReg:{{ user.username }}|TrxID:{{ reg_payment.transaction_id }}&size=120"
+                style="border-radius: 10px;" alt="QR Code">
+        </div>
+
+        <div class="no-print">
+            <button onclick="window.print()" class="btn">রসিদ প্রিন্ট করুন</button>
+        </div>
+    </div>
+
+    <div class="no-print">
+        <a href="{% url 'agent_dashboard' %}"
+            style="display: block; text-align: center; margin-top: 20px; color: #8e8e93; text-decoration: none; font-size: 14px; font-weight: 600;">←
+            ড্যাশবোর্ডে ফিরে যান</a>
+    </div>
+</body>
+
+</html>

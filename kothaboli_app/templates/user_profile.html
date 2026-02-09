@@ -1,0 +1,40 @@
+<div class="profile-header">
+    <h2>{{ user.userprofile.full_name }}</h2>
+
+    {% if user.userprofile.role == 'agent' %}
+    <span class="badge agent-badge">
+        <i data-lucide="shield-check"></i> ভেরিফাইড এজেন্ট
+    </span>
+    {% else %}
+    <span class="badge user-badge">
+        <i data-lucide="user"></i> সাধারণ মেম্বার
+    </span>
+    {% endif %}
+</div>
+
+<style>
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 14px;
+        backdrop-filter: blur(10px);
+    }
+
+    .agent-badge {
+        background: rgba(52, 199, 89, 0.15);
+        /* iOS Green */
+        color: #248a3d;
+        border: 1px solid rgba(52, 199, 89, 0.3);
+    }
+
+    .user-badge {
+        background: rgba(0, 122, 255, 0.15);
+        /* iOS Blue */
+        color: #007aff;
+        border: 1px solid rgba(0, 122, 255, 0.3);
+    }
+</style>

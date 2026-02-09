@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>বুকিং আপডেট | কথা বলি</title>
+    <style>
+        body {
+            background: #f2f2f7;
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .update-card {
+            background: white;
+            padding: 40px;
+            border-radius: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            width: 350px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .save-btn {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="update-card">
+        <h3>বুকিং আপডেট করুন</h3>
+        <p>ক্লায়েন্ট: {{ booking.client.userprofile.full_name }}</p>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="datetime-local" name="new_time" required>
+            <button type="submit" class="save-btn">পরিবর্তন সেভ করুন</button>
+        </form>
+        <a href="{% url 'manage_bookings' %}"
+            style="display:block; margin-top:15px; color:#8e8e93; text-decoration:none;">বাতিল করুন</a>
+    </div>
+</body>
+
+</html>

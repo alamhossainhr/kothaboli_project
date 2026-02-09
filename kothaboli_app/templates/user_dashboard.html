@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ড্যাশবোর্ড | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --ios-blue: #007aff;
+            --glass: rgba(255, 255, 255, 0.75);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f2f2f7 0%, #fff5f6 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header Styles --- */
+        .ios-header {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ios-pink);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1c1c1e;
+            font-weight: 600;
+            margin-left: 25px;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            flex: 1;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .welcome-section {
+            margin-bottom: 40px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 35px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: var(--ios-pink);
+            box-shadow: 0 8px 15px rgba(255, 45, 85, 0.1);
+        }
+
+        /* --- Logout Modal --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- Footer Styles --- */
+        .ios-footer {
+            background: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid #e5e5e5;
+            padding: 40px 20px;
+            margin-top: 60px;
+            text-align: center;
+            color: #8e8e93;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="ios-header">
+        <div class="nav-container">
+            <a href="{% url 'dashboard' %}" class="logo">🌸 কথা বলি</a>
+            <nav class="nav-links">
+                <a href="{% url 'dashboard' %}">হোম</a>
+                <a href="javascript:void(0)" onclick="openLogoutModal()" style="color: var(--ios-pink);">লগআউট</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="welcome-section">
+            <h2>স্বাগতম, {{ user.userprofile.full_name }}! 👋</h2>
+            <p style="color: #8e8e93;">আজ আপনার দিনটি কেমন কাটছে?</p>
+        </div>
+
+        <div class="services-grid">
+            <a href="{% url 'agent_list' %}" class="service-card">
+                <div class="icon-wrapper"><i data-lucide="users"></i></div>
+                <h3>এজেন্ট খুঁজুন</h3>
+                <p>আমাদের অভিজ্ঞ বন্ধুদের সাথে কথা বলে মনের ভার হালকা করুন।</p>
+            </a>
+
+            <a href="{% url 'blog' %}" class="service-card">
+                <div class="icon-wrapper"><i data-lucide="book-open"></i></div>
+                <h3>কমিউনিটি ব্লগ</h3>
+                <p>অন্যদের জীবনের গল্প পড়ুন এবং নিজের অনুভূতি শেয়ার করুন।</p>
+            </a>
+
+            <a href="{% url 'my_bookings' %}" class="service-card">
+                <div class="icon-wrapper"><i data-lucide="calendar"></i></div>
+                <h3>আমার বুকিং</h3>
+                <p>আপনার সকল সেশন এবং অ্যাপয়েন্টমেন্ট এখানে দেখুন।</p>
+            </a>
+
+            <a href="{% url 'support' %}" class="service-card">
+                <div class="icon-wrapper"><i data-lucide="heart-handshake"></i></div>
+                <h3>সাপোর্ট সেন্টার</h3>
+                <p>যেকোনো সমস্যায় আমাদের টিমের সাথে সরাসরি যোগাযোগ করুন।</p>
+            </a>
+        </div>
+    </main>
+
+    <footer class="ios-footer">
+        <p>&copy; 2026 কথা বলি। সকল স্বত্ব সংরক্ষিত।</p>
+        <div style="margin-top: 10px;">
+            <a href="{% url 'about' %}" style="margin: 0 10px; color: #8e8e93; text-decoration: none;">আমাদের
+                সম্পর্কে</a> |
+            <a href="{% url 'contact' %}" style="margin: 0 10px; color: #8e8e93; text-decoration: none;">যোগাযোগ</a>
+        </div>
+    </footer>
+
+    <div id="logoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <div style="font-size: 50px; margin-bottom: 20px;">👋</div>
+            <h2>লগআউট নিশ্চিত করুন</h2>
+            <p>আপনি কি নিশ্চিত যে অ্যাকাউন্ট থেকে বেরিয়ে যেতে চান?</p>
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button onclick="closeLogoutModal()"
+                    style="flex:1; padding:15px; border-radius:15px; border:none; background:#e5e5ea; cursor:pointer; font-weight:700;">বাতিল</button>
+                <a href="{% url 'logout' %}"
+                    style="flex:1; padding:15px; border-radius:15px; background:var(--ios-pink); color:white; text-decoration:none; font-weight:700;">লগআউট</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        function openLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
+    </script>
+</body>
+
+</html>

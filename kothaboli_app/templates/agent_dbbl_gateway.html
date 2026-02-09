@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Payment | DBBL</title>
+    <style>
+        :root {
+            --dbbl-green: #006a4e;
+        }
+
+        body {
+            background: #f2f2f7;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .payment-container {
+            width: 400px;
+            background: var(--dbbl-green);
+            border-radius: 25px;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header img {
+            width: 140px;
+        }
+
+        .body-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .instruction-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Form Styling */
+        .label-text {
+            text-align: left;
+            margin-bottom: 5px;
+            font-size: 13px;
+            opacity: 0.9;
+            padding-left: 5px;
+            font-weight: 600;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 18px;
+            background: white;
+            color: var(--dbbl-green);
+            border: none;
+            border-radius: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        /* Modal UI */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(15px);
+            z-index: 4000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .confirm-card {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            color: #1c1c1e;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-yes {
+            flex: 1;
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            background: var(--dbbl-green);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-no {
+            flex: 1;
+            padding: 15px;
+            border-radius: 15px;
+            border: none;
+            background: #e5e5ea;
+            color: #1c1c1e;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-container">
+        <div class="header">
+            <img src="/media/agents/logo/DBBL-logo.jpg" alt="DBBL">
+        </div>
+        <div class="body-content">
+            <div class="admin-card-box">
+                <p class="fee-label">নিচের কার্ড নম্বরে নিবন্ধন ফি প্রদান করুন</p>
+                <p>(DBBL Nexus/Card):</p>
+                <h2 class="fee-amount">৳ 500.00</h2> <span class="card-info-label">কার্ড নম্বর (Admin Card
+                    Number)</span>
+                <div class="static-card-display">4840 6100 0473 0851</div>
+            </div>
+
+            <form id="paymentForm" method="POST" onsubmit="return showConfirm(event)">
+                {% csrf_token %}
+
+                <div class="label-text">Card / Account Number:</div>
+                <input type="text" name="phone_number" placeholder="017XXXXXXXX" class="input-field" required
+                    maxlength="12">
+
+                <div class="label-text">Transaction ID (TrxID):</div>
+                <input type="text" name="transaction_id" placeholder="BXDTHFK7Y" class="input-field"
+                    style="text-transform: uppercase;" required>
+
+                <button type="submit" class="confirm-btn">Confirm Payment</button>
+            </form>
+
+            <div style="margin-top: 25px;">
+                <a href="{% url 'agent_registration_fee' %}"
+                    style="color: white; text-decoration: none; font-size: 13px; opacity: 0.7;">← পেমেন্ট মেথোডে ফিরে
+                    যান</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="customConfirm" class="modal-overlay">
+        <div class="confirm-card">
+            <div style="font-size: 55px; margin-bottom: 20px;">🛡️</div>
+            <h2 style="font-size: 24px; margin: 0;">পেমেন্ট নিশ্চিত করুন</h2>
+            <p style="color: #8e8e93; line-height: 1.5; margin-top: 10px;">আপনার দেওয়া তথ্য কি সঠিক? ভুল TrxID দিলে
+                এডমিন পেমেন্ট রিজেক্ট করে দেবে।</p>
+            <div class="modal-btns">
+                <button onclick="closeConfirm(false)" class="btn-no">বাতিল</button>
+                <button onclick="closeConfirm(true)" class="btn-yes">হ্যাঁ, ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div id="flashError" class="modal-overlay" style="display: flex;">
+        <div class="confirm-card" style="border-top: 8px solid #ff3b30;">
+            <div style="font-size: 55px; margin-bottom: 20px;">🚫</div>
+            <h2 style="font-size: 24px; margin: 0;">Duplicate Found</h2>
+            <p style="color: #8e8e93; margin-top: 10px;">{{ message }}</p>
+            <button onclick="document.getElementById('flashError').style.display='none'" class="btn-yes">ঠিক
+                আছে</button>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <script>
+        const modal = document.getElementById('customConfirm');
+        const form = document.getElementById('paymentForm');
+        let isConfirmed = false;
+
+        function showConfirm(event) {
+            if (!isConfirmed) {
+                event.preventDefault(); // Stop standard submission
+                modal.style.display = 'flex'; // Show stylish UI
+                return false;
+            }
+            return true;
+        }
+
+        function closeConfirm(authenticated) {
+            if (authenticated) {
+                isConfirmed = true;
+                form.submit(); // Submit if verified
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

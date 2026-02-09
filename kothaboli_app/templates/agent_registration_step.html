@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>এজেন্ট চুক্তি ও নিবন্ধন | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ios-blue: #007aff;
+            --ios-pink: #ff2d55;
+            --ios-green: #34c759;
+            --bg: #f2f2f7;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .agreement-card {
+            background: white;
+            max-width: 700px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .policy-box {
+            background: #fff1f1;
+            border-left: 5px solid var(--ios-pink);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+        }
+
+        .policy-list {
+            padding-left: 20px;
+            color: #48484a;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .policy-list li {
+            margin-bottom: 12px;
+        }
+
+        .fee-highlight {
+            text-align: center;
+            padding: 20px;
+            background: #f2f2f7;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .fee-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--ios-pink);
+            display: block;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+
+        .checkbox-container input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--ios-blue);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--ios-blue);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 17px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #0063cf;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #c7c7cc;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="agreement-card">
+        <div style="text-align: center;">
+            <span style="font-size: 40px;">🌸</span>
+            <h2 style="margin: 10px 0 5px 0; font-weight: 700;">এজেন্ট নিবন্ধন ও চুক্তি</h2>
+            <p style="color: #8e8e93; margin: 0;">প্রোফাইল ভেরিফিকেশনের আগে এই চুক্তি সম্পন্ন করা বাধ্যতামূলক</p>
+        </div>
+
+        <div class="policy-box">
+            <h4 style="margin: 0 0 15px 0; color: var(--ios-pink); display: flex; align-items: center; gap: 8px;">
+                <i data-lucide="shield-alert"></i> কঠোর নীতিমালা (Strict Policies)
+            </h4>
+            <ul class="policy-list">
+                <li><strong>অপরাধমুক্ত সেবা:</strong> কোনো ধরনের বেআইনি বা অনৈতিক কর্মকাণ্ডে লিপ্ত হওয়া যাবে না।</li>
+                <li><strong>গোপনীয়তা রক্ষা:</strong> ক্লায়েন্টের কোনো ব্যক্তিগত তথ্য বা কথোপকথন ফাঁস (Information Leak)
+                    করা কঠোরভাবে নিষিদ্ধ।</li>
+                <li><strong>প্লাটফর্মের নিরাপত্তা:</strong> অ্যাপের বাইরের কোনো নম্বরে সরাসরি যোগাযোগ বা সার্ভিস প্রদান
+                    করা যাবে না। সকল লেনদেন এই প্ল্যাটফর্মেই হতে হবে।</li>
+                <li><strong>সার্ভিস চার্জ:</strong> প্রতিটি বুকিং থেকে প্ল্যাটফর্ম **২০% (20%) সার্ভিস চার্জ** হিসেবে
+                    কেটে রাখবে।</li>
+                <li><strong>শাস্তি:</strong> নীতিমালা ভঙ্গ করলে আইনানুগ ব্যবস্থা গ্রহণসহ অ্যাকাউন্ট স্থায়ীভাবে বাতিল করা
+                    হবে।</li>
+            </ul>
+        </div>
+
+        <div class="fee-highlight">
+            <span style="color: #8e8e93; font-size: 14px; font-weight: 600;">নিবন্ধন ফি (এককালীন)</span>
+            <span class="fee-amount">৳ ৫০০.০০</span>
+            <p style="color: #8e8e93; font-size: 12px; margin: 5px 0 0 0;">* এটি অফেরতযোগ্য নিবন্ধন ফি</p>
+        </div>
+
+        <form method="POST" id="registrationForm">
+            {% csrf_token %}
+
+            <label class="checkbox-container">
+                <input type="checkbox" id="agreementCheckbox" name="agreement_accepted" required>
+                <span style="font-size: 14px; color: #1c1c1e;">
+                    আমি <strong>নিবন্ধন ফি ৫০০ টাকা</strong> এবং <strong>২০% সার্ভিস চার্জসহ</strong> উপরের সকল শর্তাবলী
+                    মেনে চলছি এবং কোনো নিয়ম ভঙ্গ করব না।
+                </span>
+            </label>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i data-lucide="credit-card"></i> ফি প্রদান করে এগিয়ে যান
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 25px;">
+            <a href="{% url 'agent_dashboard' %}"
+                style="color: #8e8e93; text-decoration: none; font-size: 13px; font-weight: 600;">
+                ← ড্যাশবোর্ডে ফিরে যান
+            </a>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Simple form validation logic
+        const checkbox = document.getElementById('agreementCheckbox');
+        const submitBtn = document.getElementById('submitBtn');
+
+        checkbox.addEventListener('change', function () {
+            submitBtn.disabled = !this.checked;
+        });
+
+        // Initialize button state
+        submitBtn.disabled = !checkbox.checked;
+    </script>
+</body>
+
+</html>

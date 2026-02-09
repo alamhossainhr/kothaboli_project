@@ -1,0 +1,21 @@
+<div class="edit-container"
+    style="max-width: 500px; margin: 50px auto; background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+    <h2 style="text-align: center; color: #ff2d55;">বুকিং পরিবর্তন করুন</h2>
+    <p style="text-align: center; color: #8e8e93;">এজেন্ট: {{ booking.agent.user.userprofile.full_name }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label style="display: block; margin-bottom: 10px; font-weight: 600;">নতুন সময় নির্বাচন করুন:</label>
+        <input type="datetime-local" name="scheduled_time" value="{{ booking.scheduled_time|date:'Y-m-d\TH:i' }}"
+            style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 20px;"
+            required>
+
+        <button type="submit"
+            style="width: 100%; background: #34c759; color: white; border: none; padding: 15px; border-radius: 15px; font-weight: 700; cursor: pointer;">
+            আপডেট নিশ্চিত করুন
+        </button>
+    </form>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'my_bookings' %}" style="color: #8e8e93; text-decoration: none;">ফিরে যান</a>
+    </div>
+</div>

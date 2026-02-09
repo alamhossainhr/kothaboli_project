@@ -1,0 +1,77 @@
+<div class="container"
+    style="padding: 40px; background: #f2f2f7; min-height: 100vh; font-family: 'Hind Siliguri', sans-serif;">
+    <h2 style="font-weight: 700; margin-bottom: 30px; display: flex; align-items: center; gap: 10px;">
+        🛡️ এজেন্ট ভেরিফিকেশন লিস্ট
+    </h2>
+
+    <div
+        style="background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05);">
+        <table style="width: 100%; border-collapse: collapse; vertical-align: middle;">
+            <thead style="background: #f9f9fb; border-bottom: 1px solid #eee;">
+                <tr style="color: #8e8e93; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+                    <th style="padding: 20px 25px; text-align: left;">এজেন্ট</th>
+                    <th style="text-align: center;">ডকুমেন্ট</th>
+                    <th style="text-align: center;">প্রোফাইল ভিউ</th>
+                    <th style="text-align: right; padding-right: 25px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agent in all_agents %}
+                <tr style="border-bottom: 1px solid #f2f2f7;">
+                    <td style="padding: 18px 25px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <img src="{% if agent.profile_image %}{{ agent.profile_image.url }}{% else %}https://i.pravatar.cc/150{% endif %}"
+                                style="width: 55px; height: 55px; border-radius: 18px; object-fit: cover;">
+                            <div>
+                                <div style="font-weight: 700; color: #1c1c1e;">{{ agent.user.userprofile.full_name }}
+                                </div>
+                                <div style="font-size: 12px; color: #8e8e93;">@{{ agent.user.username }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align: center;">
+                        {% if agent.identity_document %}
+                        <a href="{{ agent.identity_document.url }}" target="_blank"
+                            style="color: #007aff; text-decoration: none; font-size: 14px; font-weight: 600;">
+                            📄 ফাইল দেখুন
+                        </a>
+                        {% else %}
+                        <span style="color: #ff3b30; font-size: 13px;">ফাইল নেই</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="{% url 'admin_view_profile' agent.id %}"
+                            style="display: inline-block; padding: 10px 20px; background: #fff1f1; color: #ff2d55; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 13px;">
+                            👁️ View Profile
+                        </a>
+                    </td>
+                    <td style="text-align: right; padding-right: 25px;">
+                        {% if agent.is_verified %}
+                        <span
+                            style="background: #e2f9e1; color: #34c759; padding: 8px 16px; border-radius: 12px; font-weight: 700; font-size: 13px;">Approved</span>
+                        {% elif agent.rejection_reason %}
+                        <span
+                            style="background: #fff1f1; color: #ff2d55; padding: 8px 16px; border-radius: 12px; font-weight: 700; font-size: 13px;">Rejected</span>
+                        {% else %}
+                        <span
+                            style="background: #f2f2f7; color: #8e8e93; padding: 8px 16px; border-radius: 12px; font-weight: 700; font-size: 13px;">Pending</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="padding: 80px; text-align: center; color: #8e8e93;">বর্তমানে কোনো ডেটা পাওয়া
+                        যায়নি।</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="{% url 'admin:index' %}"
+            style="display: inline-block; padding: 15px 35px; background: #1c1c1e; color: white; border-radius: 18px; text-decoration: none; font-weight: 700;">
+            ← ড্যাশবোর্ডে ফিরে যান
+        </a>
+    </div>
+</div>

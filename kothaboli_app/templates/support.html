@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>সাপোর্ট সেন্টার | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f2f2f7 0%, #fff5f6 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .support-card {
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            padding: 50px;
+            border-radius: 45px;
+            width: 400px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+        }
+
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            padding: 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 30px;
+            transition: 0.3s;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="support-card">
+        <div style="font-size: 50px; margin-bottom: 20px;">🎧</div>
+        <h2>আমরা আপনার জন্য আছি</h2>
+        <p>যেকোনো প্রয়োজনে আমাদের সাথে সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন।</p>
+
+        <a href="https://wa.me/+8801843412149" class="whatsapp-btn">
+            <i data-lucide="message-circle"></i> হোয়াটসঅ্যাপ করুন
+        </a>
+        <a href="/dashboard/" style="display:block; margin-top:25px; color:#007aff; text-decoration:none;">ড্যাশবোর্ডে
+            ফিরে যান</a>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

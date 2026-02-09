@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>এজেন্ট ড্যাশবোর্ড | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ios-blue: #007aff;
+            --ios-green: #34c759;
+            --ios-pink: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f2f2f7 0%, #e5e5ea 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .ios-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .main-content {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            padding: 25px;
+            border-radius: 30px;
+            border: 1px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            margin-bottom: 25px;
+        }
+
+        /* Responsive Grid Logic */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 992px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="ios-header">
+        <div class="nav-container">
+            <a href="{% url 'home' %}"
+                style="text-decoration:none; font-weight:700; color:var(--ios-pink); font-size:22px;">🌸 কথা বলি</a>
+            <nav>
+                <a href="{% url 'manage_bookings' %}"
+                    style="text-decoration:none; color:#1c1c1e; margin-left:20px;">বুকিং লিস্ট</a>
+                <a href="javascript:void(0)" onclick="openLogoutModal()"
+                    style="text-decoration:none; color:var(--ios-pink); margin-left:20px; font-weight:600;">লগআউট</a>
+            </nav>
+        </div>
+    </header>
+
+    <div id="logoutModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="font-size: 50px; margin-bottom: 20px;">👋</div>
+            <h2 style="margin: 0 0 10px 0; font-size: 24px; color: #1c1c1e;">লগআউট নিশ্চিত করুন</h2>
+            <p style="color: #8e8e93; margin-bottom: 30px;">আপনি কি নিশ্চিত যে অ্যাকাউন্ট থেকে বেরিয়ে যেতে চান?</p>
+            <div style="display: flex; gap: 15px;">
+                <button onclick="closeLogoutModal()"
+                    style="flex:1; padding:15px; border-radius:15px; border:none; background:#e5e5ea; cursor:pointer; font-weight:700; font-size:16px;">বাতিল</button>
+                <form action="{% url 'logout' %}" method="POST" style="flex:1;">
+                    {% csrf_token %}
+                    <button type="submit"
+                        style="width:100%; padding:15px; border-radius:15px; border:none; background:var(--ios-pink); color:white; cursor:pointer; font-weight:700; font-size:16px;">লগআউট</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div
+            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <img src="{% if agent_prof.profile_image %}{{ agent_prof.profile_image.url }}{% else %}https://i.pravatar.cc/150{% endif %}"
+                        style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div
+                        style="background: rgba(255, 204, 0, 0.15); color: #b28900; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 13px;">
+                        ⭐ {{ actual_score|default:"0.0" }}</div>
+                </div>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <h2 style="margin: 0; font-size: 26px;">হ্যালো, {{ user.userprofile.full_name }}</h2>
+                        {% if agent_prof.is_verified %}
+                        <span
+                            style="background: #007aff; color: white; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                            <i data-lucide="badge-check" style="width: 14px; height: 14px;"></i> ভেরিফাইড
+                        </span>
+                        {% endif %}
+                    </div>
+                    <div
+                        style="color: var(--ios-green); font-weight:700; font-size: 14px; display: flex; align-items: center; gap: 5px; margin-top: 5px;">
+                        <span style="height: 8px; width: 8px; background: var(--ios-green); border-radius: 50%;"></span>
+                        অনলাইন
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'agent_edit_profile' %}"
+                style="background: var(--ios-blue); color: white; padding: 12px 25px; border-radius: 12px; text-decoration: none; font-weight: 600;">Edit
+                Profile</a>
+        </div>
+
+        <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span style="font-weight: 700;">🛠️ প্রোফাইল সম্পন্ন: {{ completion }}%</span>
+                <a href="{% url 'agent_verification_setup' %}"
+                    style="color: var(--ios-blue); text-decoration:none; font-size:13px; font-weight:600;">তথ্য আপডেট
+                    করুন →</a>
+            </div>
+            <div style="background: #e5e5ea; height: 10px; border-radius: 10px; overflow: hidden;">
+                <div
+                    style="width: {{ completion }}%; background: linear-gradient(90deg, #ff2d55, #ff375f); height: 100%;">
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="glass-card" style="padding: 20px; text-align: center; margin-bottom: 0;">
+                <h4 style="color: #8e8e93; font-size: 12px; margin: 0 0 5px 0;">মোট কল</h4>
+                <div style="font-size: 22px; font-weight: 700;">{{ total_calls }}</div>
+            </div>
+
+            <div class="glass-card" style="padding: 20px; text-align: center; margin-bottom: 0;">
+                <h4 style="color: #8e8e93; font-size: 12px; margin: 0 0 5px 0;">মোট মিনিট</h4>
+                <div style="font-size: 22px; font-weight: 700; color: var(--ios-blue);">{{ total_minutes }} মি.</div>
+            </div>
+
+            <div class="glass-card" style="padding: 20px; text-align: center; margin-bottom: 0;">
+                <h4 style="color: #8e8e93; font-size: 12px; margin: 0 0 5px 0;">মোট আয়</h4>
+                <div style="font-size: 22px; font-weight: 700;">৳ {{ gross_earnings }}</div>
+            </div>
+
+            <div class="glass-card" style="padding: 20px; text-align: center; margin-bottom: 0;">
+                <h4 style="color: #8e8e93; font-size: 12px; margin: 0 0 5px 0;">কমিশন (20%)</h4>
+                <div style="font-size: 22px; font-weight: 800; color: var(--ios-pink);">- ৳ {{ commission_amount }}
+                </div>
+            </div>
+
+            <div class="glass-card"
+                style="padding: 20px; text-align: center; margin-bottom: 0; background: #e2f9e1; border: none;">
+                <h4 style="color: var(--ios-green); font-size: 12px; margin: 0 0 5px 0;">ব্যালেন্স (Net)</h4>
+                <div style="font-size: 22px; font-weight: 700; color: var(--ios-green);">৳ {{ net_balance }}</div>
+            </div>
+        </div>
+
+        {% if reg_payment %}
+        <div
+            style="background: #e1f5fe; border: 1px solid #00b0ff; padding: 18px; border-radius: 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div style="font-size: 14px; color: #01579b; font-weight: 600;">📄 আপনার নিবন্ধন ফি (৳৫০০) পরিশোধিত হয়েছে।
+            </div>
+            <a href="{% url 'registration_receipt' %}"
+                style="background: #00b0ff; color: white; padding: 10px 22px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 13px;">রসিদ
+                ডাউনলোড</a>
+        </div>
+        {% endif %}
+
+        <div class="booking-section">
+            <h3 style="font-weight: 700; margin-bottom: 15px;">সাম্প্রতিক বুকিং</h3>
+            {% if recent_bookings %}
+            {% for booking in recent_bookings %}
+            <div
+                style="background: white; padding: 15px; border-radius: 15px; margin-bottom: 12px; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-weight: 700; color: #1c1c1e;">{{ booking.client.username }}</div>
+                    <div style="font-size: 12px; color: #8e8e93;">{{ booking.scheduled_time|date:"d M, Y | h:i A" }}
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 700; color: #1c1c1e;">৳ {{ booking.total_amount }}</div>
+                    <span
+                        style="font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; 
+                        {% if booking.is_paid %} background: #e8f5e9; color: var(--ios-green); {% else %} background: #fff5f5; color: var(--ios-pink); {% endif %}">
+                        {% if booking.is_paid %} পরিশোধিত {% else %} বাকি {% endif %}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p style="text-align: center; color: #8e8e93; padding: 20px;">কোনো বুকিং পাওয়া যায়নি।</p>
+            {% endif %}
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+        function openLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
+    </script>
+</body>
+
+</html>

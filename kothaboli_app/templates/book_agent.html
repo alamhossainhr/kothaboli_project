@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>বুকিং করুন | কথা বলি</title>
+    <style>
+        body {
+            background: #f2f2f7;
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .booking-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 35px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .agent-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #ff2d55;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .rate-badge {
+            color: #ff2d55;
+            font-weight: 700;
+            font-size: 18px;
+            margin: 5px 0 25px;
+        }
+
+        .time-section {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .time-label {
+            display: block;
+            font-size: 13px;
+            color: #8e8e93;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        input[type="datetime-local"] {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e5e5ea;
+            font-size: 14px;
+            background: #f9f9fb;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .set-btn {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Summary Box Styling */
+        .summary-box {
+            background: #f8f9fa;
+            border: 1px dashed #e5e5ea;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: none;
+            /* Initially hidden */
+        }
+
+        .confirm-btn {
+            background: #34c759;
+            color: white;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .confirm-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 20px;
+            border: 1px solid #ff2d55;
+            color: #ff2d55;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="booking-card">
+        <img src="{% if agent.profile_image %}{{ agent.profile_image.url }}{% else %}https://i.pravatar.cc/150{% endif %}"
+            class="agent-avatar">
+        <h2 style="margin: 0;">{{ agent.user.userprofile.full_name }}</h2>
+        <p class="rate-badge">৳{{ agent.hourly_rate }} / মিনিট</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="time-section">
+                <label class="time-label">শুরুর সময় (Start Time)</label>
+                <div class="input-row">
+                    <input type="datetime-local" id="start_dt" name="start_time" required>
+                    <button type="button" class="set-btn" onclick="calculateSummary()">SET</button>
+                </div>
+
+                <label class="time-label">শেষ সময় (End Time)</label>
+                <div class="input-row">
+                    <input type="datetime-local" id="end_dt" name="end_time" required>
+                    <button type="button" class="set-btn" onclick="calculateSummary()">SET</button>
+                </div>
+            </div>
+
+            <div id="summaryCard" class="summary-box">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="color: #8e8e93;">মোট সময়:</span>
+                    <span style="font-weight: 700;"><span id="total_mins">0</span> মিনিট</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #8e8e93;">মোট চার্জ:</span>
+                    <span style="font-weight: 700; color: #34c759;">৳<span id="total_cost">0</span></span>
+                </div>
+            </div>
+
+            <button type="submit" id="confirmBtn" class="confirm-btn">বুকিং কনফার্ম করুন</button>
+        </form>
+
+        <a href="{% url 'agent_list' %}" class="back-link">Back to agent List</a>
+    </div>
+
+    <script>
+        function calculateSummary() {
+            const startVal = document.getElementById('start_dt').value;
+            const endVal = document.getElementById('end_dt').value;
+            // This is now treated as a per-minute rate
+            const ratePerMinute = parseFloat("{{ agent.hourly_rate }}") || 0;
+
+            if (startVal && endVal) {
+                const start = new Date(startVal);
+                const end = new Date(endVal);
+
+                if (end > start) {
+                    const diffMs = end - start;
+                    const diffMins = Math.round(diffMs / 60000);
+
+                    // Simplified Calculation: Minutes * Rate
+                    const totalCharge = Math.round(diffMins * ratePerMinute);
+
+                    document.getElementById('total_mins').innerText = diffMins;
+                    document.getElementById('total_cost').innerText = totalCharge;
+
+                    document.getElementById('summaryCard').style.display = 'block';
+                    document.getElementById('confirmBtn').classList.add('active');
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

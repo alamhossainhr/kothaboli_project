@@ -1,0 +1,170 @@
+<div class="main-content"
+    style="max-width: 800px; margin: 0 auto; padding: 20px; font-family: 'Hind Siliguri', sans-serif;">
+    <h2 style="text-align: center; color: #1c1c1e; font-weight: 700;">এজেন্ট ভেরিফিকেশন (Fraud Prevention)</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="glass-card"
+        style="background: white; padding: 30px; border-radius: 30px; border: 1px solid #ddd; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        {% csrf_token %}
+
+        <h4 style="color: #ff2d55; border-bottom: 1px solid #eee; padding-bottom: 10px;">🏠 ঠিকানা</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 13px; color: #8e8e93;">বর্তমান ঠিকানা</label>
+                <textarea name="present_address" placeholder="আপনার বর্তমান ঠিকানা লিখুন..." required
+                    style="padding: 15px; border-radius: 12px; border: 1px solid #ddd; min-height: 80px;">{{ agent_prof.present_address|default:'' }}</textarea>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 13px; color: #8e8e93;">স্থায়ী ঠিকানা</label>
+                <textarea name="permanent_address" placeholder="আপনার স্থায়ী ঠিকানা লিখুন..." required
+                    style="padding: 15px; border-radius: 12px; border: 1px solid #ddd; min-height: 80px;">{{ agent_prof.permanent_address|default:'' }}</textarea>
+            </div>
+        </div>
+
+        <h4 style="color: #ff2d55; border-bottom: 1px solid #eee; padding-bottom: 10px;">👥 নিকটাত্মীয়ের তথ্য</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 13px; color: #8e8e93;">নাম</label>
+                <input type="text" name="relative_name" value="{{ agent_prof.relative_name|default:'' }}"
+                    placeholder="নিকটাত্মীয়ের নাম" required
+                    style="padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 13px; color: #8e8e93;">মোবাইল নম্বর</label>
+                <input type="text" name="relative_mobile" value="{{ agent_prof.relative_mobile|default:'' }}"
+                    placeholder="মোবাইল নম্বর" required
+                    style="padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
+            </div>
+        </div>
+
+        <h4 style="color: #ff2d55; border-bottom: 1px solid #eee; padding-bottom: 10px;">🛡️ নমিনি তথ্য</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 13px; color: #8e8e93;">নমিনির নাম</label>
+                <input type="text" name="nominee_name" value="{{ agent_prof.nominee_name|default:'' }}"
+                    placeholder="নমিনির নাম" required
+                    style="padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label style="font-size: 13px; color: #8e8e93;">নমিনির মোবাইল নম্বর</label>
+                <input type="text" name="nominee_mobile" value="{{ agent_prof.nominee_mobile|default:'' }}"
+                    placeholder="নমিনির মোবাইল নম্বর" required
+                    style="padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px; grid-column: span 2;">
+                <label style="font-size: 13px; color: #8e8e93;">নমিনির NID নম্বর</label>
+                <input type="text" name="nominee_nid" value="{{ agent_prof.nominee_nid|default:'' }}"
+                    placeholder="নমিনির NID নম্বর" required
+                    style="padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
+            </div>
+        </div>
+        <h4 style="color: #ff2d55; border-bottom: 1px solid #eee; padding-bottom: 10px;">💰 সার্ভিস চার্জ</h4>
+        <div style="margin-bottom: 25px;">
+            <div style="display: flex; flex-direction: column; gap: 5px; max-width: 300px;">
+                <label style="font-size: 13px; color: #8e8e93;">প্রতি মিনিটের রেট (Minute Rate in ৳)</label>
+                <div style="position: relative; display: flex; align-items: center;">
+                    <span style="position: absolute; left: 15px; font-weight: 700; color: #1c1c1e;">৳</span>
+                    <input type="number" name="hourly_rate" value="{{ agent_prof.hourly_rate|default:'500' }}"
+                        placeholder="0.00" step="0.01" required
+                        style="padding: 12px 12px 12px 35px; width: 100%; border-radius: 10px; border: 1px solid #ddd; font-weight: 600;">
+                </div>
+                <p style="font-size: 11px; color: #8e8e93; margin-top: 4px;">* কাস্টমার আপনার এই রেট অনুযায়ী পেমেন্ট
+                    করবে।</p>
+            </div>
+        </div>
+        <div style="background: #f2f2f7; padding: 20px; border-radius: 20px; margin-bottom: 25px;">
+            <label style="font-weight: 700; display: block; margin-bottom: 10px;">জন্ম তারিখ (Age Verification)</label>
+            <input type="date" name="dob" value="{{ agent_prof.dob|date:'Y-m-d' }}" required
+                style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd;">
+            <p style="font-size: 12px; color: #8e8e93; margin-top: 5px;">* এনআইডি অনুযায়ী জন্ম তারিখ প্রদান করুন।</p>
+        </div>
+
+        <h4 style="color: #ff2d55; border-bottom: 1px solid #eee; padding-bottom: 10px;">📄 প্রয়োজনীয় ডকুমেন্টস</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+
+            <div style="font-size: 13px; color: #48484a;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600;">প্রোফাইল ছবি (Max 5MB):</label>
+                <input type="file" name="profile_image" id="profile_image" accept="image/png, image/jpeg"
+                    style="display: block; width: 100%; padding: 8px; border: 1px dashed #ddd; border-radius: 10px;">
+                <p style="font-size: 10px; color: #8e8e93; margin-top: 5px;">* শুধুমাত্র JPG বা PNG ফরম্যাট।</p>
+
+                {% if agent_prof.profile_image %}
+                <p style="color: #34c759; font-size: 11px; margin: 0;">✅ ছবি আপলোড করা আছে</p>
+                {% endif %}
+            </div>
+
+            <div style="font-size: 13px; color: #48484a;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600;">এনআইডি (NID) কপি (Max
+                    5MB):</label>
+                <input type="file" name="identity_document" id="identity_document"
+                    accept="image/png, image/jpeg, application/pdf"
+                    style="display: block; width: 100%; padding: 8px; border: 1px dashed #ddd; border-radius: 10px;">
+                <p style="font-size: 10px; color: #8e8e93; margin-top: 5px;">* JPG, PNG বা PDF ফরম্যাট।</p>
+
+                {% if agent_prof.identity_document %}
+                <div style="margin-top: 8px; padding: 10px; background: #f2f2f7; border-radius: 12px;">
+                    <p style="color: #34c759; font-size: 11px; margin: 0 0 5px 0; font-weight: 700;">✅ এনআইডি আপলোড করা
+                        আছে</p>
+                    <a href="{{ agent_prof.identity_document.url }}" target="_blank"
+                        style="color: #007aff; text-decoration: none; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                        <i data-lucide="eye" style="width:12px; height:12px;"></i> বর্তমান NID দেখুন
+                    </a>
+                    <p style="color: #8e8e93; font-size: 10px; margin-top: 5px;">* নতুন ফাইল সিলেক্ট করলে আগেরটি
+                        পরিবর্তন হয়ে যাবে।</p>
+                </div>
+                {% else %}
+                <p style="color: #ff3b30; font-size: 11px; margin-top: 5px;">⚠️ কোনো ফাইল আপলোড করা হয়নি</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" action="{% url 'agent_verification_setup' %}">
+            {% csrf_token %}
+            <button type="submit"
+                style="width: 100%; background: #34c759; color: white; border: none; padding: 18px; border-radius: 15px; font-weight: 700; cursor: pointer;">
+                ভেরিফিকেশন সম্পন্ন করুন
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="{% url 'agent_dashboard' %}" style="color: #007aff; text-decoration: none; font-weight: 600;">
+                ← ড্যাশবোর্ডে ফিরে যান
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const profileImg = document.getElementById('profile_image');
+        const nidDoc = document.getElementById('identity_document');
+
+        const maxSize = 5 * 1024 * 1024; // 5MB limit
+        const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        const allowedDocTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+
+        function validateFile(input, allowedTypes, label) {
+            if (input.files.length > 0) {
+                const file = input.files[0];
+
+                if (file.size > maxSize) {
+                    alert(`${label} ৫ মেগাবাইটের (5MB) চেয়ে বড় হতে পারবে না।`);
+                    e.preventDefault();
+                    return false;
+                }
+
+                if (!allowedTypes.includes(file.type)) {
+                    alert(`${label} এর ফরম্যাট সঠিক নয়। শুধুমাত্র JPG, PNG বা PDF আপলোড করুন।`);
+                    e.preventDefault();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        if (!validateFile(profileImg, allowedImageTypes, "প্রোফাইল ছবি")) return;
+        if (!validateFile(nidDoc, allowedDocTypes, "এনআইডি ডকুমেন্ট")) return;
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+</script>

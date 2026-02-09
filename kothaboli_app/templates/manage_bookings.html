@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>বুকিং ম্যানেজমেন্ট | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            background: #f2f2f7;
+            font-family: 'Hind Siliguri', sans-serif;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .manage-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            padding: 30px;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 2px solid #eee;
+            color: #8e8e93;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .action-link {
+            color: #007aff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .status-tag {
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .paid {
+            background: #e2f9e1;
+            color: #34c759;
+        }
+
+        .unpaid {
+            background: #fff1f1;
+            color: #ff3b30;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="manage-card">
+            <h2>বুকিং ম্যানেজমেন্ট প্যানেল</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ক্লায়েন্ট</th>
+                        <th>সময়</th>
+                        <th>পেমেন্ট</th>
+                        <th>অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td><strong>{{ booking.client.userprofile.full_name }}</strong></td>
+                        <td>{{ booking.scheduled_time|date:"d M, Y" }}</td>
+                        <td>
+                            {% if booking.is_paid %}
+                            <span class="status-tag paid">পেইড</span>
+                            {% else %}
+                            <span class="status-tag unpaid">বাকি</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'update_booking' booking.id %}" class="action-link">এডিট</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align:center; padding:30px;">কোন বুকিং পাওয়া যায়নি।</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'agent_dashboard' %}"
+                style="display:block; margin-top:25px; color:#8e8e93; text-decoration:none;">← প্যানেলে ফিরে যান</a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কথা বলি | Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff5f6 0%, #e8f0ff 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            /* Stack grid and footer vertically */
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            /* Allow scrolling to see footer on small screens */
+            position: relative;
+        }
+
+        /* 1. Background Romantic Animation */
+        .bg-animation {
+            position: fixed;
+            /* Fixed so it covers the whole scrolling page */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 45, 85, 0.15);
+            animation: moveUp 15s infinite linear;
+            font-size: 24px;
+        }
+
+        @keyframes moveUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 2. Layout Grid */
+        .main-grid {
+            flex: 1;
+            /* Pushes the footer to the bottom */
+            display: grid;
+            grid-template-columns: 320px 420px 320px;
+            grid-template-rows: auto auto;
+            gap: 25px;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            z-index: 10;
+            position: relative;
+            padding: 60px 20px;
+            /* Added padding for space */
+        }
+
+        /* 3. Floating Animation for Side Cards */
+        .info-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        .info-card:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .info-card:nth-child(3) {
+            animation-delay: 1.5s;
+        }
+
+        .info-card:nth-child(4) {
+            animation-delay: 3s;
+        }
+
+        .info-card:nth-child(5) {
+            animation-delay: 4.5s;
+        }
+
+        @keyframes floatCard {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* 4. Center Card */
+        .iphone-card-center {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            padding: 70px 40px;
+            border-radius: 55px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .iphone-card-center:hover,
+        .info-card:hover {
+            transform: translateY(-20px) scale(1.03);
+            animation-play-state: paused;
+            box-shadow: 0 40px 90px rgba(255, 45, 85, 0.15);
+            border-color: rgba(255, 45, 85, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .info-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 44px;
+            margin: 10px 0;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 20px;
+            color: var(--ios-pink);
+            margin-bottom: 8px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #48484a;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .ios-btn {
+            display: block;
+            background: var(--ios-pink);
+            color: white;
+            text-decoration: none;
+            padding: 22px;
+            border-radius: 22px;
+            font-weight: 700;
+            font-size: 22px;
+            margin-top: 35px;
+            box-shadow: 0 15px 30px rgba(255, 45, 85, 0.3);
+            transition: 0.3s;
+        }
+
+        /* 5. Footer Styles - Bottom and Middle */
+        .ios-footer {
+            width: 100%;
+            padding: 40px 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            z-index: 100;
+        }
+
+        .ios-footer p {
+            font-size: 13px;
+            color: #8e8e93;
+            margin-bottom: 8px;
+        }
+
+        .ios-footer a {
+            font-size: 14px;
+            color: #8e8e93;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .ios-footer a:hover {
+            color: var(--ios-pink);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation" id="animContainer"></div>
+
+    <div class="main-grid">
+        <div class="info-card">
+            <i data-lucide="message-circle-heart" style="color:#ff2d55; margin-bottom:10px;"></i>
+            <h3>এজেন্টের সাথে কথা বলুন</h3>
+            <p>সরাসরি মনের কথা বলুন।</p>
+        </div>
+
+        <div class="iphone-card-center">
+            <div style="font-size: 55px; margin-bottom: 10px;">🌸</div>
+            <h1>কথা বলি</h1>
+            <p>একাকীত্বের অবসান ঘটাতে আমরা আছি আপনার পাশে।</p>
+            <a href="{% url 'login' %}" class="ios-btn">এখনি শুরু করুন</a>
+            <a href="{% url 'login' %}?next={% url 'agent_list' %}"
+                style="display:block; margin-top:20px; color:#007aff; text-decoration:none;">
+                এজেন্টদের তালিকা দেখুন →
+            </a>
+        </div>
+
+        <div class="info-card">
+            <i data-lucide="help-circle" style="color:#ff2d55; margin-bottom:10px;"></i>
+            <h3>একাকিত্বে ভুগছেন</h3>
+            <p>খুব সহজেই নিঃস্বঙ্গতা দুর করতে পারেন।</p>
+        </div>
+
+        <div class="info-card">
+            <img src="/media/agents/logo/happy_people.jpg" alt="Happy">
+            <p>হাজারো মানুষ এখন খুশি।</p>
+        </div>
+
+        <div class="info-card">
+            <img src="/media/agents/logo/stay_behind.jpg" alt="Support">
+            <p>আমরা আপনার পাশে আছি।</p>
+        </div>
+    </div>
+
+    <footer class="ios-footer">
+        <p>&copy; 2026 কথা বলি। সকল স্বত্ব সংরক্ষিত।</p>
+        <div class="footer-links">
+            <a href="{% url 'about' %}">আমাদের সম্পর্কে</a>
+            <span style="color: #d1d1d6; margin: 0 10px;">|</span>
+            <a href="{% url 'contact' %}">যোগাযোগ</a>
+        </div>
+    </footer>
+
+    <script>
+        const container = document.getElementById('animContainer');
+        const symbols = ['♥', '🌸', '💕', '✨'];
+        for (let i = 0; i < 20; i++) {
+            const el = document.createElement('div');
+            el.className = 'floating-heart';
+            el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.animationDelay = (Math.random() * 15) + 's';
+            container.appendChild(el);
+        }
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

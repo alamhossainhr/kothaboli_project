@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>আমার বুকিং | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --ios-blue: #007aff;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            background: #f2f2f7;
+            font-family: 'Hind Siliguri', sans-serif;
+            padding: 40px;
+            margin: 0;
+        }
+
+        .booking-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 35px;
+            margin-bottom: 20px;
+            border: 1px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-blue {
+            background: var(--ios-blue);
+            color: white;
+        }
+
+        .btn-red {
+            background: #ff3b30;
+            color: white;
+        }
+
+        .btn-green {
+            background: #34c759;
+            color: white;
+        }
+
+        .star-rating label {
+            font-size: 25px;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover~label,
+        .star-rating input:checked~label {
+            color: #ffcc00 !important;
+        }
+
+        .review-flex-container {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .review-flex-container textarea {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid #e5e5ea;
+            background: #f9f9fb;
+            resize: none;
+            font-family: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="max-width: 850px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <a href="{% url 'dashboard' %}" style="color: var(--ios-blue); text-decoration: none; font-weight: 600;">←
+                ড্যাশবোর্ড</a>
+        </div>
+
+        {% for booking in bookings %}
+        <div class="booking-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <img src="{% if booking.agent.profile_image %}{{ booking.agent.profile_image.url }}{% else %}https://i.pravatar.cc/150{% endif %}"
+                        style="width: 75px; height: 75px; border-radius: 50%; border: 3px solid var(--ios-pink); object-fit: cover;">
+
+                    <div>
+                        <h3 style="margin: 0; color: #1c1c1e;">এজেন্ট: {{ booking.agent.user.userprofile.full_name }}
+                        </h3>
+
+                        <p style="color: #8e8e93; font-size: 14px; margin: 5px 0;">
+                            📅 সময়:
+                            {% if booking.start_time %}
+                            <b>{{ booking.start_time|date:"d M Y, h:i A" }} - {{ booking.end_time|date:"h:i A" }}</b>
+                            {% else %}
+                            <b>{{ booking.scheduled_time|date:"d M Y, h:i A" }}</b>
+                            {% endif %}
+                        </p>
+
+                        {% if booking.payment_status == 'approved' %}
+                        <div style="color: #34c759; font-weight: 600; font-size: 14px; margin-top: 5px;">
+                            📞 যোগাযোগ: {{ booking.agent.phone_number }}
+                        </div>
+                        {% else %}
+                        <p style="color: #ff3b30; font-size: 12px; margin: 0;">🔒 নম্বর দেখতে পেমেন্ট করুন</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="text-align: right;">
+                    {% if booking.payment_status == 'approved' %}
+                    <span
+                        style="background: rgba(52, 199, 89, 0.1); color: #34c759; padding: 8px 15px; border-radius: 12px; font-weight: 700;">পরিশোধিত</span>
+                    <a href="{% url 'download_receipt' booking.id %}" target="_blank"
+                        style="color: var(--ios-blue); text-decoration: none; font-size: 12px; display: block; margin-top: 10px;">📄
+                        রসিদ</a>
+
+                    {% elif booking.payment_status == 'pending' %}
+                    <span
+                        style="background: rgba(255, 149, 0, 0.1); color: #ff9500; padding: 8px 15px; border-radius: 12px; font-weight: 700;">পেমেন্ট
+                        পেন্ডিং</span>
+                    <div
+                        style="margin-top: 10px; display: flex; gap: 5px; justify-content: flex-end; align-items: center;">
+                        <a href="{% url 'pay_booking' booking.id %}" class="btn"
+                            style="background: #ff2d55; color: white; padding: 10px 18px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 13px;">পেমেন্ট</a>
+
+                        <a href="{% url 'edit_booking' booking.id %}" class="btn btn-blue">পরিবর্তন</a>
+                        <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-red">বাতিল</a>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'pay_booking' booking.id %}" class="btn btn-green">পেমেন্ট করুন</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if booking.payment_status == 'approved' %}
+            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed #e5e5ea;">
+                <form action="{% url 'submit_review' booking.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="star-rating"
+                        style="display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 5px; margin-bottom: 10px;">
+                        <input type="radio" id="s5-{{booking.id}}" name="rating" value="5"
+                            style="display:none;" /><label for="s5-{{booking.id}}">★</label>
+                        <input type="radio" id="s4-{{booking.id}}" name="rating" value="4"
+                            style="display:none;" /><label for="s4-{{booking.id}}">★</label>
+                        <input type="radio" id="s3-{{booking.id}}" name="rating" value="3"
+                            style="display:none;" /><label for="s3-{{booking.id}}">★</label>
+                        <input type="radio" id="s2-{{booking.id}}" name="rating" value="2"
+                            style="display:none;" /><label for="s2-{{booking.id}}">★</label>
+                        <input type="radio" id="s1-{{booking.id}}" name="rating" value="1"
+                            style="display:none;" /><label for="s1-{{booking.id}}">★</label>
+                    </div>
+                    <div class="review-flex-container">
+                        <textarea name="comment" placeholder="আপনার অভিজ্ঞতা লিখুন..." rows="2"></textarea>
+                        <button type="submit" class="btn btn-green">রিভিউ সাবমিট</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p style="text-align: center; color: #8e8e93; padding: 50px;">বর্তমানে কোনো বুকিং নেই।</p>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

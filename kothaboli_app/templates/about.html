@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>আমাদের সম্পর্কে | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff5f6 0%, #e8f0ff 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0;
+            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .about-card {
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            padding: 60px 40px;
+            border-radius: 50px;
+            max-width: 800px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: var(--ios-pink);
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #48484a;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            text-align: left;
+        }
+
+        .vision-item {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="about-card">
+        <div style="font-size: 60px; margin-bottom: 20px;">🤝</div>
+        <h1>"কথা বলি" আসলে কি?</h1>
+        <p>
+            আমাদের সমাজে অনেক মানুষ একাকীত্ব অনুভব করেন। মনের কথাগুলো শেয়ার করার মতো একজন ভালো বন্ধু বা বিশ্বস্ত মানুষের
+            অভাব প্রায়ই দেখা দেয়।
+            <strong>'কথা বলি'</strong> হলো এমন একটি প্ল্যাটফর্ম যেখানে আপনি অভিজ্ঞ এজেন্টদের সাথে সরাসরি কথা বলে আপনার
+            মনকে হালকা করতে পারেন।
+        </p>
+
+        <div class="vision-grid">
+            <div class="vision-item">
+                <h3 style="color: var(--ios-pink);">🌸 আমাদের লক্ষ্য</h3>
+                <p style="font-size: 15px;">সমাজের প্রতিটি মানুষের মানসিক প্রশান্তি নিশ্চিত করা এবং একাকীত্ব দূর করা।
+                </p>
+            </div>
+            <div class="vision-item">
+                <h3 style="color: var(--ios-pink);">🛡️ নিরাপত্তা</h3>
+                <p style="font-size: 15px;">আপনার প্রতিটি কথোপকথন এবং ব্যক্তিগত তথ্য আমাদের কাছে সম্পূর্ণ গোপন ও
+                    সুরক্ষিত থাকে।</p>
+            </div>
+        </div>
+
+        <a href="{% url 'home' %}"
+            style="display:inline-block; margin-top:40px; color:#007aff; text-decoration:none; font-weight:700;">← মূল
+            পাতায় ফিরে যান</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>পেমেন্ট রসিদ | কথা বলি</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-blue: #007aff;
+            --ios-pink: #ff2d55;
+            --bg: #f2f2f7;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .receipt-card {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+        }
+
+        .status-badge {
+            background: rgba(52, 199, 89, 0.1);
+            color: #34c759;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--ios-pink);
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        .info-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #f2f2f7;
+            font-size: 15px;
+        }
+
+        .label {
+            color: #8e8e93;
+        }
+
+        .value {
+            text-align: right;
+            font-weight: 600;
+            color: #1c1c1e;
+        }
+
+        .total-amt {
+            font-size: 24px;
+            color: #34c759;
+            font-weight: 700;
+        }
+
+        .ios-btn {
+            display: block;
+            width: 100%;
+            background: var(--ios-blue);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 20px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: 0.3s;
+            margin-top: 30px;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+
+            .receipt-card {
+                box-shadow: none;
+                border: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="receipt-card">
+        <div style="text-align: center;">
+            <span class="status-badge">পরিশোধিত (PAID)</span>
+            <h2>কথা বলি (Kotha Boli)</h2>
+            <p style="color: #8e8e93; font-size: 14px; margin-bottom: 30px;">অফিসিয়াল পেমেন্ট রসিদ</p>
+        </div>
+
+        <table class="info-table">
+            <tr>
+                <td class="label">ইনভয়েস নং:</td>
+                <td class="value">KB-{{ booking.id|stringformat:"04d" }}</td>
+            </tr>
+            <tr>
+                <td class="label">তারিখ:</td>
+                <td class="value">{{ booking.scheduled_time|date:"d M, Y | h:i A" }}</td>
+            </tr>
+            <tr>
+                <td class="label">গ্রাহকের নাম:</td>
+                <td class="value">{{ booking.client.username }}</td>
+            </tr>
+            <tr>
+                <td class="label">এজেন্টের নাম:</td>
+                <td class="value">{{ booking.agent.user.userprofile.full_name }}</td>
+            </tr>
+            <tr>
+                <td class="label">পেমেন্ট মাধ্যম:</td>
+                <td class="value" style="color:var(--ios-pink);">{{ booking.payment_method }}</td>
+            </tr>
+            <tr>
+                <td class="label">সেন্ডার নম্বর:</td>
+                <td class="value">{{ booking.sender_number }}</td>
+            </tr>
+            <tr>
+                <td class="label">TrxID:</td>
+                <td class="value" style="color:var(--ios-blue);">{{ booking.transaction_id }}</td>
+            </tr>
+            <tr style="border-top: 2px solid #f2f2f7;">
+                <td class="label" style="padding-top: 25px; font-size: 18px; font-weight: 700; color: #1c1c1e;">মোট
+                    পরিমাণ:</td>
+                <td class="value total-amt" style="padding-top: 25px;">৳ {{ booking.total_amount }}</td>
+            </tr>
+        </table>
+
+        <div style="margin-top: 20px; text-align: center; border-top: 1px dashed #eee; padding-top: 20px;">
+            <p style="font-size: 11px; color: #8e8e93; margin-bottom: 10px;">লেনদেনের সত্যতা যাচাই করতে স্ক্যান করুন</p>
+            <img src="https://quickchart.io/qr?text=Invoice:KB-{{ booking.id|stringformat:'04d' }}|TrxID:{{ booking.transaction_id }}|Amt:{{ booking.total_amount }}&size=130"
+                alt="QR Code"
+                style="border: 1px solid #f2f2f7; padding: 5px; border-radius: 12px; width: 130px; height: 130px;">
+        </div>
+
+        <div class="no-print">
+            <button onclick="window.print()" class="ios-btn">PDF ডাউনলোড করুন</button>
+            <a href="{% url 'agent_list' %}"
+                style="display: block; text-align: center; margin-top: 20px; color: #8e8e93; text-decoration: none; font-size: 14px; font-weight: 600;">←
+                এজেন্ট তালিকায় ফিরে যান</a>
+        </div>
+    </div>
+</body>
+
+</html>
