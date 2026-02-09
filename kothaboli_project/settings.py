@@ -1,12 +1,34 @@
-# settings.py
 import os
-import dj_database_url  # ADD THIS IMPORT AT THE TOP
+from pathlib import Path
+import dj_database_url  #
 
-# ... (keep BASE_DIR, SECRET_KEY, etc.)
+# Build paths inside the project
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SECURITY: Use environment variables for sensitive info in production
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key')
+DEBUG = 'RENDER' not in os.environ  # False if running on Render
+
+# ALLOWED_HOSTS for Render
+ALLOWED_HOSTS = ['*']
+if 'RENDER_EXTERNAL_HOSTNAME' in os.environ:
+    ALLOWED_HOSTS.append(os.environ.get('RENDER_EXTERNAL_HOSTNAME'))
+
+LOGIN_URL = 'login'
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'kothaboli_app',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ADD THIS for CSS/Images
+    'whitenoise.middleware.WhiteNoiseMiddleware',  #
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -15,8 +37,25 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# REMOVE the old MySQL DATABASES block
-# USE THIS SINGLE BLOCK INSTEAD:
+ROOT_URLCONF = 'kothaboli_project.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# Database configuration: Uses Render's DATABASE_URL if available
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
@@ -24,8 +63,9 @@ DATABASES = {
     )
 }
 
-# Static files (CSS, JavaScript, Images)
+# Static files configuration for production
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# This allows Render to serve your dashboard CSS
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
